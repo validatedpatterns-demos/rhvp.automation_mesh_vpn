@@ -1,0 +1,21 @@
+---
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install EPEL
+  ansible.builtin.package:
+    name: '{{ epel_package_url }}'
+  when: "'epel-release' not in ansible_facts.packages"
+
+- name: Check for CRB
+  ansible.builtin.command: |-
+    dnf repolist
+  register: repolist
+  changed_when: false
+
+- name: Enable CRB
+  ansible.builtin.command: |-
+    crb enable
+  changed_when: true
+  when: "'codeready-builder' not in repolist.stdout"

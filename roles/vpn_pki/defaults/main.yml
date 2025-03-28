@@ -1,1 +1,4 @@
 ---
+output_directory: '~/rhvp_vp_pki'
+client_count: 4
+rsa_key_size: 2048

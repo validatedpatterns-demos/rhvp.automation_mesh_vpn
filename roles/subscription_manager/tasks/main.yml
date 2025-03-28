@@ -1,0 +1,14 @@
+---
+- name: Check subscription status, can fail
+  ansible.builtin.command: |-
+    subscription-manager status
+  register: subman_status
+  changed_when: false
+  ignore_errors: true
+
+- name: Register node since it is not registered
+  ansible.builtin.command:
+    subsciption-manager register --username "{{ rhsm_username }}" --password "{{ rhsm_password }}"
+  no_log: true
+  changed_when: true
+  when: subman_status is failed

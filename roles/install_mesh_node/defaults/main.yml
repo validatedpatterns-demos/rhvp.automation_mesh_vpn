@@ -5,7 +5,7 @@ install_mesh_node_aap_password: false
 install_mesh_node_aap_validate_certs: false
 install_mesh_node_hostname: rhel9-vpn-001.edge-gitops-vms.svc
 
-install_mesh_node_install_bundle_dir: /root/install_bundle
+install_mesh_node_install_bundle_dir: "/root/{{ install_mesh_node_aap_hostname }}_install_bundle"
 install_mesh_node_install_bundle_tarball: "{{ install_mesh_node_install_bundle_dir }}.tar.gz"
 
 

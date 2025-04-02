@@ -53,7 +53,7 @@
     - name: Extract installer bundle
       ansible.builtin.unarchive:
         src: "{{ install_mesh_node_install_bundle_tarball }}"
-        dest: "{{ install_mesh_node_install_bundle_dir }}"
+        dest: /root
         remote_src: true
 
     - name: Install requirements locally

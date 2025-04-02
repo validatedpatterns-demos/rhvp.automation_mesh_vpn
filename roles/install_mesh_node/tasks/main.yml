@@ -40,7 +40,7 @@
 
     - name: Download installer bundle
       ansible.builtin.get_url:
-        url: "https://{{ install_mesh_node_aap_hostname }}/{{ instance_info['install_bundle'] }}"
+        url: "https://{{ install_mesh_node_aap_hostname }}/{{ instance_info['related']['install_bundle'] }}"
         user: "{{ install_mesh_node_aap_username }}"
         password: "{{ install_mesh_node_aap_password }}"
         force_basic_auth: true

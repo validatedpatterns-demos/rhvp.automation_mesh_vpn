@@ -22,7 +22,8 @@
   ansible.builtin.service_facts:
 
 - name: Install receptor
-  when: ansible_facts["services"]["receptor.service"]["state"] != 'running'
+  when:
+    - "'receptor.service' not in ansible_facts['services']"
   block:
     - name: Find instances
       ansible.builtin.uri:

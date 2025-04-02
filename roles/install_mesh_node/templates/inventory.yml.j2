@@ -1,0 +1,7 @@
+---
+all:
+  hosts:
+    remote-execution:
+      ansible_host: {{ install_mesh_node_hostname }}
+      ansible_user: root
+      ansible_connection: local

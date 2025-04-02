@@ -1,0 +1,74 @@
+---
+- name: Check repolist
+  ansible.builtin.command: |-
+    dnf repolist
+  register: repolist
+  changed_when: false
+
+- name: Enable extra repositories
+  ansible.builtin.command: |-
+    subscription-manager repos --enable ansible-automation-platform-2.5-for-rhel-{{ ansible_facts.distribution_major_version }}-{{ ansible_facts.architecture }}-rpms
+  when: "'ansible-automation-platform-2.5-for-rhel-{{ ansible_facts.distribution_major_v  ersion }}-{{ ansible_facts.architecture }}-rpms' not in repolist.stdout"
+
+- name: Install needed packages
+  ansible.builtin.package:
+    name:
+      - ansible-core
+
+- name: Retrieve service facts
+  ansible.builtin.service_facts:
+
+- name: Install receptor
+  when: ansible_facts["services"]["receptor.service"]["state"] != 'running'
+  block:
+    - name: Find instances
+      ansible.builtin.uri:
+        url: "https://{{ install_mesh_node_aap_hostname }}/api/v2/controller/instances"
+        user: "{{ install_mesh_node_aap_username }}"
+        password: "{{ install_mesh_node_aap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ install_mesh_node_aap_validate_certs }}"
+      register: aap_instances
+
+    - name: Retrieve local instance name
+      ansible.builtin.set_fact:
+        instance_info: aap_instances['results']['hostname'][install_mesh_node_hostname]
+
+    - name: Download installer bundle
+      ansible.builtin.get_url:
+        url: "https://{{ install_mesh_node_aap_hostname }}/{{ instance_info['install_bundle'] }}"
+        user: "{{ install_mesh_node_aap_username }}"
+        password: "{{ install_mesh_node_aap_password }}"
+        force_basic_auth: true
+        validate_certs: "{{ install_mesh_node_aap_validate_certs }}"
+        dest: "{{ install_mesh_node_install_bundle_tarball }}"
+        mode: "0644"
+        owner: root
+        group: root
+
+    - name: Extract installer bundle
+      ansible.builtin.unarchive:
+        src: "{{ install_mesh_node_install_bundle_tarball }}"
+        dest: "{{ install_mesh_node_install_bundle_dir }}"
+
+    - name: Install requirements locally
+      ansible.builtin.command:
+        chdir: "{{ install_mesh_node_install_bundle_dir }}"
+        cmd: |-
+          ansible-galaxy collection install -r requirements.yml
+      changed_when: true
+
+    - name: Template inventory file
+      ansible.builtin.template:
+        src: inventory.yml.j2
+        dest: "{{ install_mesh_node_install_bundle_dir }}/inventory.yml"
+        mode: "0644"
+        owner: root
+        group: root
+
+    - name: Run installer
+      ansible.builtin.command:
+        chdir: "{{ install_mesh_node_install_bundle_dir }}"
+        cmd: |-
+          ansible-playbook -i inventory.yml install_receptor.yml
+      changed_when: true

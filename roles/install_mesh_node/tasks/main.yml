@@ -34,9 +34,9 @@
         validate_certs: "{{ install_mesh_node_aap_validate_certs }}"
       register: aap_instances
 
-    - name: Retrieve local instance name
+    - name: Retrieve local instance info
       ansible.builtin.set_fact:
-        instance_info: "{{ aap_instances['json']['results']['hostname'][install_mesh_node_hostname] }}"
+        instance_info: "{{ aap_instances['json']['results'] | selectattr('hostname', 'equalto', install_mash_node_hostname) }}"
 
     - name: Download installer bundle
       ansible.builtin.get_url:

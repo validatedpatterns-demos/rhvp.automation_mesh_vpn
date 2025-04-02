@@ -5,10 +5,13 @@
   register: repolist
   changed_when: false
 
-- name: Enable extra repositories
+- name: Define extra repository
+  ansible.builtin.set_fact:
+    extra_repo: 'ansible-automation-platform-2.5-for-rhel-{{ ansible_facts.distribution_major_version }}-{{ ansible_facts.architecture }}-rpms'
+
+- name: Enable extra repository
   ansible.builtin.command: |-
-    subscription-manager repos --enable ansible-automation-platform-2.5-for-rhel-{{ ansible_facts.distribution_major_version }}-{{ ansible_facts.architecture }}-rpms
-  when: "'ansible-automation-platform-2.5-for-rhel-{{ ansible_facts.distribution_major_version }}-{{ ansible_facts.architecture }}-rpms' not in repolist.stdout"
+    subscription-manager repos --enable {{ extra_repo }}
 
 - name: Install needed packages
   ansible.builtin.package:

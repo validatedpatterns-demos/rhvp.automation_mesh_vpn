@@ -8,7 +8,7 @@
 
 - name: Register node since it is not registered
   ansible.builtin.command:
-    subsciption-manager register --username "{{ subscription_manager_rhsm_username }}" --password "{{ subscription_manager_rhsm_password }}"
+    subscription-manager register --username "{{ subscription_manager_rhsm_username }}" --password "{{ subscription_manager_rhsm_password }}"
   no_log: "{{ subscription_manager_no_log_setting }}"
   changed_when: true
   when: subman_status is failed

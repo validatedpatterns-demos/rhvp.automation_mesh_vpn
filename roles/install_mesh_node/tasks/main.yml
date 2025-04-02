@@ -76,4 +76,6 @@
         chdir: "{{ install_mesh_node_install_bundle_dir }}"
         cmd: |-
           ansible-playbook -i inventory.yml install_receptor.yml
+      async: 900
+      poll: 30
       changed_when: true

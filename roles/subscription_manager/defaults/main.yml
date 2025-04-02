@@ -1,3 +1,5 @@
 ---
-rhsm_username: false
-rhsm_password: false
+subscription_manager_no_log_setting: true
+
+subscription_manager_rhsm_username: false
+subscription_mananger_rhsm_password: false

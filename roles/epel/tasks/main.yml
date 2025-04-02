@@ -4,8 +4,9 @@
     manager: auto
 
 - name: Install EPEL
-  ansible.builtin.package:
+  ansible.builtin.dnf:
     name: '{{ epel_package_url }}'
+    disable_gpg_check: true
   when: "'epel-release' not in ansible_facts.packages"
 
 - name: Check for CRB

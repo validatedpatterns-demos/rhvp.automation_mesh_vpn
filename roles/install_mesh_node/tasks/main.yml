@@ -36,7 +36,7 @@
 
     - name: Retrieve local instance info
       ansible.builtin.set_fact:
-        instance_info: "{{ aap_instances['json']['results'] | selectattr('hostname', 'equalto', install_mesh_node_hostname)[0] }}"
+        instance_info: "{{ aap_instances['json']['results'] | selectattr('hostname', 'equalto', install_mesh_node_hostname) | first }}"
 
     - name: Download installer bundle
       ansible.builtin.get_url:

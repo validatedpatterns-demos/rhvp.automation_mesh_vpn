@@ -54,6 +54,7 @@
       ansible.builtin.unarchive:
         src: "{{ install_mesh_node_install_bundle_tarball }}"
         dest: "{{ install_mesh_node_install_bundle_dir }}"
+        remote_src: true
 
     - name: Install requirements locally
       ansible.builtin.command:

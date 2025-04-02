@@ -27,7 +27,7 @@
   block:
     - name: Find instances
       ansible.builtin.uri:
-        url: "https://{{ install_mesh_node_aap_hostname }}/api/v2/controller/instances"
+        url: "https://{{ install_mesh_node_aap_hostname }}/api/controller/v2/instances"
         user: "{{ install_mesh_node_aap_username }}"
         password: "{{ install_mesh_node_aap_password }}"
         force_basic_auth: true

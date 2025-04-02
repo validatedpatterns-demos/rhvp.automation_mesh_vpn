@@ -1,0 +1,54 @@
+port 1194
+proto tcp
+dev tun0
+
+tls-server
+# This is necessary due to a bad update in 2.5.7-1
+providers legacy default
+
+# Tell OpenVPN to be a multi-client udp server
+mode server
+
+# The server's virtual endpoints
+ifconfig-pool-persist ipp.txt
+server 10.8.0.0 255.255.255.0
+
+# Client should attempt reconnection on link
+# failure.
+keepalive 10 60
+
+# Delete client instances after some period
+# of inactivity.
+inactive 600
+
+compress lz4-v2
+push "compress lz4-v2"
+
+# The server doesn't need privileges
+user openvpn
+group openvpn
+
+# Keep TUN devices and keys open across restarts.
+persist-tun
+persist-key
+
+verb 4
+
+# Easy-RSA Type: server
+# Name: tunnel-server
+
+<ca>
+{{ vpn_server_cq_contents }}
+</ca>
+
+<cert>
+{{ vpn_server_cert_contents }}
+</cert>
+
+<key>
+{{ vpn_server_key_contents }}
+</key>
+
+<dh>
+{{ vpn_server_dh_contents }}
+</dh>

@@ -1,0 +1,25 @@
+---
+- name: Install openvpn server
+  ansible.builtin.package:
+    name: openvpn
+
+- name: Configure openvpn server
+  ansible.builtin.template:
+    src: server.conf.j2
+    dest: /etc/openvpn/server/server.conf
+    mode: '0600'
+    owner: root
+    group: root
+  register: config_server
+
+- name: Restart openvpn server
+  ansible.builtin.service:
+    name: openvpn-server@server.service
+    state: restarted
+  when: config_server is changed
+
+- name: Start and enable openvpn server
+  ansible.builtin.service:
+    name: openvpn-server@server.service
+    state: started
+    enabled: true

@@ -36,7 +36,7 @@
 
     - name: Retrieve local instance name
       ansible.builtin.set_fact:
-        instance_info: aap_instances['results']['hostname'][install_mesh_node_hostname]
+        instance_info: "{{ aap_instances['results']['hostname'][install_mesh_node_hostname] }}"
 
     - name: Download installer bundle
       ansible.builtin.get_url:

@@ -1,0 +1,9 @@
+---
+- name: Install VPN Server
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    - subscription_manager
+    - epel
+    - vpn_server

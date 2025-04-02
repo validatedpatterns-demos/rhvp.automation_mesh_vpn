@@ -1,0 +1,8 @@
+---
+- name: Prep RHEL in Package Mode for further installations
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    - subscription_manager
+    - epel

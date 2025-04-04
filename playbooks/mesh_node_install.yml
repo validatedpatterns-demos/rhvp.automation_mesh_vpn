@@ -10,7 +10,7 @@
     install_mesh_node_aap_hostname: "{{ aap_hostname }}"
     install_mesh_node_aap_password: "{{ aap_password }}"
   roles:
-    - name: Run {{ item }} role
+    - name: Run role
       ansible.builtin.include_role:
         name: "{{ item }}"
       loop:

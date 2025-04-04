@@ -12,7 +12,7 @@
   tasks:
     - name: Run role
       ansible.builtin.include_role:
-        name: "rhvp.automation_mesh_vpn.{{ item }}"
+        name: "{{ item }}"
       loop:
         - subscription_manager
         - install_mesh_node

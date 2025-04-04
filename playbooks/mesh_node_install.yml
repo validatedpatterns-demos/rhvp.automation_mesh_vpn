@@ -10,5 +10,9 @@
     install_mesh_node_aap_hostname: "{{ aap_hostname }}"
     install_mesh_node_aap_password: "{{ aap_password }}"
   roles:
-    - subscription_manager
-    - install_mesh_node
+    - name: Run {{ item }} role
+      ansible.builtin.include_role:
+        name: "{{ item }}"
+      loop:
+        - subscription_manager
+        - install_mesh_node

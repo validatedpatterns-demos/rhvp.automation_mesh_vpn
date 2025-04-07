@@ -1,5 +1,5 @@
 ---
-- name: Install VPN Server
+- name: Configure Server for SSH tunnelling
   hosts: all
   gather_facts: true
   become: true
@@ -9,5 +9,3 @@
     subscription_manager_no_log_setting: '{{ no_log_setting }}'
   roles:
     - subscription_manager
-    - epel
-    - vpn_server

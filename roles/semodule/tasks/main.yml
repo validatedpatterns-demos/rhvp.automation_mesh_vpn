@@ -5,37 +5,13 @@
       - checkpolicy
       - policycoreutils
 
-- name: "Remove SELinux policy package {{ module_name }}"
-  ansible.builtin.command:
-    cmd: "semodule -r {{ module_name }}"
-  failed_when: false
+- name: Check for existing SELinux module
+  ansible.builtin.command: |-
+    semodule -l
+  register: semodule_output
+  changed_when: false
 
-- name: "Copy SELinux type enforcement file {{ module_name }}"
-  ansible.builtin.copy:
-    content: "{{ te_content }}"
-    dest: "/tmp/{{ module_name }}.te"
-    owner: root
-    group: root
-    mode: '0644'
-
-- name: "Compile SELinux module file {{ module_name }}"
-  ansible.builtin.command:
-    cmd: "checkmodule -M -m -o /tmp/{{ module_name }}.mod /tmp/{{ module_name }}.te"
-  changed_when: true
-
-- name: "Build SELinux policy package {{ module_name }}"
-  ansible.builtin.command:
-    cmd: "semodule_package -o /tmp/{{ module_name }}.pp -m /tmp/{{ module_name }}.mod"
-
-- name: "Load SELinux policy package {{ module_name }}"
-  ansible.builtin.command:
-    cmd: "semodule -i /tmp/{{ module_name }}.pp"
-
-- name: "Remove temporary files for {{ module_name }}"
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - "/tmp/{{ module_name }}.te"
-    - "/tmp/{{ module_name }}.mod"
-    - "/tmp/{{ module_name }}.pp"
+- name: Compile and install module if needed
+  ansible.builtin.include_tasks: semodule_install.yml
+  when:
+    - semodule_force_reinstall or (semodule_module_name not in semodule_output.stdout_lines)

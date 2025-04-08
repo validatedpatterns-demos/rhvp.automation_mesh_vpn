@@ -1,0 +1,35 @@
+---
+- name: "Remove SELinux policy package {{ semoodule_module_name }}"
+  ansible.builtin.command:
+    cmd: "semodule -r {{ semodule_module_name }}"
+  failed_when: false
+
+- name: "Copy SELinux type enforcement file {{ semodule_module_name }}"
+  ansible.builtin.copy:
+    content: "{{ semodule_te_content }}"
+    dest: "/tmp/{{ semodule_module_name }}.te"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: "Compile SELinux module file {{ semodule_module_name }}"
+  ansible.builtin.command:
+    cmd: "checkmodule -M -m -o /tmp/{{ semodule_module_name }}.mod /tmp/{{ semodule_module_name }}.te"
+  changed_when: true
+
+- name: "Build SELinux policy package {{ semodule_module_name }}"
+  ansible.builtin.command:
+    cmd: "semodule_package -o /tmp/{{ semodule_module_name }}.pp -m /tmp/{{ semodule_module_name }}.mod"
+
+- name: "Load SELinux policy package {{ semodule_module_name }}"
+  ansible.builtin.command:
+    cmd: "semodule -i /tmp/{{ semodule_module_name }}.pp"
+
+- name: "Remove temporary files for {{ semodule_module_name }}"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/tmp/{{ semodule_module_name }}.te"
+    - "/tmp/{{ semodule_module_name }}.mod"
+    - "/tmp/{{ semodule_module_name }}.pp"

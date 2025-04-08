@@ -9,3 +9,4 @@
     subscription_manager_no_log_setting: '{{ no_log_setting }}'
   roles:
     - subscription_manager
+    - ssh_tunnel_server

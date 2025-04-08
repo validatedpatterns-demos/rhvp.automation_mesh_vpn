@@ -1,0 +1,3 @@
+---
+ssh_tunnel_server_user: sshtunnel
+ssh_tunnel_server_pubkey: false

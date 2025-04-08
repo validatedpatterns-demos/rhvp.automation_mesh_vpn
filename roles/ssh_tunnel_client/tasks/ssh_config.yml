@@ -7,13 +7,10 @@
     owner: "{{ ssh_tunnel_client_user }}"
     group: "{{ ssh_tunnel_client_user }}"
 
-- name: Manage ssh pubkey restrictions
+- name: Manage ssh private key
   ansible.builtin.copy:
     content: "{{ ssh_tunnel_client_privatekey }}"
     dest: "/home/{{ ssh_tunnel_client_user }}/.ssh/id_rsa"
     mode: "0600"
     owner: "{{ ssh_tunnel_client_user }}"
     group: "{{ ssh_tunnel_client_user }}"
-
-- name: Manage service file
-  ansible.builtin.template:

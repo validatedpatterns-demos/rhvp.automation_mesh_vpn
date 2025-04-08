@@ -1,7 +1,7 @@
 ---
 - name: Manage user
   ansible.builtin.user:
-    name: "{{ ssh_tunnel_server_user }}"
+    name: "{{ ssh_tunnel_client_user }}"
     password: '*'
     password_lock: true
     comment: "SSH Tunnel user"

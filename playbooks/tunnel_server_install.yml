@@ -7,6 +7,7 @@
     subscription_manager_rhsm_username: '{{ rhsm_username }}'
     subscription_manager_rhsm_password: '{{ rhsm_password }}'
     subscription_manager_no_log_setting: '{{ no_log_setting }}'
+    ssh_tunnel_server_pubkey: '{{ tunnel_server_pubkey }}'
   roles:
     - subscription_manager
     - ssh_tunnel_server

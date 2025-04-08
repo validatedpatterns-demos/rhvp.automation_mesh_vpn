@@ -1,13 +1,6 @@
 ---
 - name: sshtunnel service
-  block:
-    - name: Reload systemd
-      ansible.builtin.systemd:
-        daemon_reload: true
-
-    - name: Restart sshtunnel service
-      ansible.builtin.systemd:
-        daemon_reload: true
-        name: sshtunnel.service
-        enabled: true
-        state: restarted
+  ansible.builtin.systemd:
+    name: sshtunnel.service
+    enabled: true
+    state: restarted

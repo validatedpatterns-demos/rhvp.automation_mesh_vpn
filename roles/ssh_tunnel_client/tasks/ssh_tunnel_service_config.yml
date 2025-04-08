@@ -6,6 +6,7 @@
     mode: "0644"
     owner: root
     group: root
+  register: service_tmpl
   notify: sshtunnel service
 
 - name: Start and enable sshtunnel
@@ -13,3 +14,8 @@
     name: sshtunnel.service
     state: started
     enabled: true
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: service_tmpl is changed

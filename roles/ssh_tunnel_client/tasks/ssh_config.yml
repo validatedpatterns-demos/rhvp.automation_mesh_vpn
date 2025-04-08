@@ -14,3 +14,4 @@
     mode: "0600"
     owner: "{{ ssh_tunnel_client_user }}"
     group: "{{ ssh_tunnel_client_user }}"
+  notify: sshtunnel service

@@ -1,0 +1,33 @@
+---
+- name: Ensure .ssh directory exists
+  ansible.builtin.file:
+    path: "/home/{{ ssh_tunnel_server_user }}/.ssh"
+    state: directory
+    mode: "0700"
+    owner: "{{ ssh_tunnel_client_user }}"
+    group: "{{ ssh_tunnel_client_user }}"
+  notify: sshtunnel service
+
+- name: Manage ssh pubkey restrictions
+  ansible.builtin.copy:
+    content: "{{ ssh_tunnel_client_privatekey }}"
+    dest: "/home/{{ ssh_tunnel_client_user }}/.ssh/id_rsa"
+    mode: "0600"
+    owner: "{{ ssh_tunnel_client_user }}"
+    group: "{{ ssh_tunnel_client_user }}"
+  notify: sshtunnel service
+
+- name: Manage service file
+  ansible.builtin.template:
+    src: sshtunnel.service.j2
+    dest: "/etc/systemd/system/sshtunnel.service"
+    mode: "0644"
+    owner: root
+    group: root
+  notify: sshtunnel service
+
+- name: Start and enable sshtunnel
+  ansible.builtin.systemd_service:
+    name: sshtunnel.service
+    state: started
+    enabled: true

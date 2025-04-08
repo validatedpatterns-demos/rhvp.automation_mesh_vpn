@@ -1,0 +1,12 @@
+Unit]
+Description=SSH Tunnel
+After=network.target
+
+[Service]
+User={{ ssh_tunnel_client_user }}
+Restart=always
+RestartSec=20
+ExecStart=/bin/ssh -NT -o ServerAliveInterval=30 -R {{ ssh_tunnel_client_endpoint }}:{{ ssh_tunnel_client_tunnel_port}}:localhost:22 {{ ssh_tunnel_client_user }}@{{ ssh_tunnel_client_endpoint }}
+
+[Install]
+WantedBy=multi-user.target

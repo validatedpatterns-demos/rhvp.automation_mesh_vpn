@@ -1,0 +1,20 @@
+module local_sshtunnel 1.0;
+
+require {
+        type ssh_home_t;
+        type ssh_exec_t;
+        type init_t;
+        type ssh_port_t;
+        class file { execute execute_no_trans map open read };
+        class tcp_socket name_connect;
+}
+
+#============= init_t ==============
+allow init_t ssh_exec_t:file { execute execute_no_trans open read };
+
+#!!!! This avc can be allowed using the boolean 'domain_can_mmap_files'
+allow init_t ssh_exec_t:file map;
+allow init_t ssh_home_t:file { open read };
+
+#!!!! This avc can be allowed using the boolean 'nis_enabled'
+allow init_t ssh_port_t:tcp_socket name_connect;

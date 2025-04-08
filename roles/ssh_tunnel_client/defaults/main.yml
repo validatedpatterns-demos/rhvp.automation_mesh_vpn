@@ -1,0 +1,3 @@
+---
+ssh_tunnel_client_user: sshtunnel
+ssh_tunnel_client_privatekey: false

@@ -1,0 +1,19 @@
+---
+- name: Manage user
+  ansible.builtin.include_tasks:
+    file: user_config.yml
+
+- name: Manage ssh config
+  ansible.builtin.include_tasks:
+    file: ssh_config.yml
+
+- name: Manage SELinux context to allow for service
+  ansible.builtin.include_role:
+    name: semodule
+  vars:
+    semodule_module_name: local_sshtunnel
+    semodule_te_content: "{{ lookup('file', 'local_sshtunnel.te') }}"
+
+- name: Manage tunnel service config
+  ansible.builtin.include_tasks:
+    file: ssh_tunnel_service_config.yml

@@ -1,0 +1,13 @@
+---
+- name: Configure Server for SSH tunnelling
+  hosts: all
+  gather_facts: true
+  become: true
+  vars:
+    subscription_manager_rhsm_username: '{{ rhsm_username }}'
+    subscription_manager_rhsm_password: '{{ rhsm_password }}'
+    subscription_manager_no_log_setting: '{{ no_log_setting }}'
+    ssh_tunnel_client_privatekey: '{{ tunnel_client_pubkey }}'
+  roles:
+    - subscription_manager
+    - ssh_tunnel_client

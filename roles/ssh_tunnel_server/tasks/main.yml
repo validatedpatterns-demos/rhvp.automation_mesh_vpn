@@ -1,7 +1,7 @@
 ---
 - name: Manage user
   ansible.builtin.include_tasks:
-    file: user.yml
+    file: user_config.yml
 
 - name: Manage ssh config
   ansible.builtin.include_tasks:

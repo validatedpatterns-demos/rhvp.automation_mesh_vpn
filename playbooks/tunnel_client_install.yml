@@ -1,5 +1,5 @@
 ---
-- name: Configure Server for SSH tunnelling
+- name: Configure Client for SSH tunnelling
   hosts: all
   gather_facts: true
   become: true
